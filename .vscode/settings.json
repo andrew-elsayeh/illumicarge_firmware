@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "stdint.h": "c",
+        "kernel.h": "c",
+        "printk.h": "c",
+        "util.h": "c",
+        "stddef.h": "c",
+        "device.h": "c",
+        "adc_reader.h": "c"
+    }
+}
