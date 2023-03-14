@@ -10,6 +10,30 @@
 #include <zephyr/sys/printk.h>
 #include <zephyr/sys/util.h>
 
+#include "adc_reader.h"
+
+//Private Variables of the Class
+// int32_t ADC1_mV;
+// int32_t ADC2_mV;
+// int32_t V_BAT_TEMP_ADC_mV;
+// int32_t V_BAT_ADC_mV;
+// int32_t BAT_CUR_mV;
+
+
+enum adc_channels {
+    ADC1_mV,
+    ADC2_mV,
+    V_BAT_TEMP_ADC_mV,
+    V_BAT_ADC_mV,
+    BAT_CUR_mV,
+};
+
+int32_t _adc_channels_mv[5];
+
+
+
+
+
 
 #if !DT_NODE_EXISTS(DT_PATH(zephyr_user)) || \
 	!DT_NODE_HAS_PROP(DT_PATH(zephyr_user), io_channels)
@@ -85,5 +109,74 @@ void readAndPrintAllChannels(void)
             printk(" = %"PRId32" mV\n", val_mv);
         }
     }
+
+}
+
+
+void updateReadings(void)
+{
+
+        for (size_t i = 0U; i < ARRAY_SIZE(adc_channels); i++) {
+        int32_t val_mv;
+
+
+        (void)adc_sequence_init_dt(&adc_channels[i], &sequence);
+
+        err = adc_read(adc_channels[i].dev, &sequence);
+        if (err < 0) {
+            printk("Could not read (%d)\n", err);
+            continue;
+        } 
+
+        val_mv = buf;
+        err = adc_raw_to_millivolts_dt(&adc_channels[i],
+                            &val_mv);
+        if (err < 0) {
+            printk(" (value in mV not available)\n");
+        } else {
+            _adc_channels_mv[i] = val_mv;
+        }
+    }
+
+
+}
+
+int32_t getADC1_mV(ADCReader_t *self)
+{
+    updateReadings();
+    return _adc_channels_mv[ADC1_mV];
+}
+int32_t getADC2_mV(ADCReader_t *self)
+{
+    updateReadings();
+    return _adc_channels_mv[ADC2_mV];
+}
+int32_t getV_BAT_ADC_mV(ADCReader_t *self)
+{
+    updateReadings();
+    return _adc_channels_mv[V_BAT_ADC_mV];
+}
+int32_t getV_BAT_TEMP_ADC_mV(ADCReader_t *self)
+{
+    updateReadings();
+    return _adc_channels_mv[V_BAT_TEMP_ADC_mV];
+}
+int32_t getBAT_CUR_mV(ADCReader_t *self)
+{
+    updateReadings();
+    return _adc_channels_mv[BAT_CUR_mV];
+}
+
+uint8_t initADCReader(ADCReader_t *ADCReader)
+{
+    ADCReader->getADC1_mV = getADC1_mV;
+    ADCReader->getADC2_mV = getADC2_mV;
+    ADCReader->getV_BAT_ADC_mV = getV_BAT_ADC_mV;
+    ADCReader->getV_BAT_TEMP_ADC_mV = getV_BAT_TEMP_ADC_mV;
+    ADCReader->getBAT_CUR_mV = getBAT_CUR_mV;
+
+    init_adc_reader();
+
+    return 0;
 
 }
