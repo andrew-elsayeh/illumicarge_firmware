@@ -28,6 +28,12 @@
 #endif
 
 
+#define STATUS_LED1_NODE DT_ALIAS(statusled1)
+#define STATUS_LED2_NODE DT_ALIAS(statusled2)
+#define STATUS_LED3_NODE DT_ALIAS(statusled3)
+#define STATUS_LED4_NODE DT_ALIAS(statusled4)
+
+
 
 
 // Public Methods
@@ -40,6 +46,7 @@ int32_t getLEDBrightnessPercentage(UserInterface_t *self);
 void _init_user_buttons(void);
 void _init_pwms(void);
 void _init_user_interface(void);
+void _init_status_leds(void);
 
 void _button_1_cb(const struct device *dev, struct gpio_callback *cb,
 		    uint32_t pins);
@@ -68,6 +75,12 @@ static struct gpio_callback button_1_cb_data;
 static const struct gpio_dt_spec button_2 = GPIO_DT_SPEC_GET_OR(TL3_NODE, gpios,
 							      {0});
 static struct gpio_callback button_2_cb_data;
+
+
+static const struct gpio_dt_spec statusled1 = GPIO_DT_SPEC_GET(STATUS_LED1_NODE, gpios);
+static const struct gpio_dt_spec statusled2 = GPIO_DT_SPEC_GET(STATUS_LED2_NODE, gpios);
+static const struct gpio_dt_spec statusled3 = GPIO_DT_SPEC_GET(STATUS_LED3_NODE, gpios);
+static const struct gpio_dt_spec statusled4 = GPIO_DT_SPEC_GET(STATUS_LED4_NODE, gpios);
 ////////////////////
 
 
@@ -76,7 +89,7 @@ void _button_1_cb(const struct device *dev, struct gpio_callback *cb,
 {
     if(led_brightness_percentage < 100)
     {
-        led_brightness_percentage = led_brightness_percentage + 20;
+        led_brightness_percentage = led_brightness_percentage + 25;
     }
     setLEDPWM(led_brightness_percentage);
 
@@ -86,9 +99,14 @@ void _button_2_cb(const struct device *dev, struct gpio_callback *cb,
 {
     if(led_brightness_percentage > 0)
     {
-        led_brightness_percentage = led_brightness_percentage - 20;
+        led_brightness_percentage = led_brightness_percentage - 25;
     }
     setLEDPWM(led_brightness_percentage);
+
+    gpio_pin_toggle_dt(&statusled1);
+    gpio_pin_toggle_dt(&statusled2);
+    gpio_pin_toggle_dt(&statusled3);
+    gpio_pin_toggle_dt(&statusled4);
 
 }
 
@@ -157,12 +175,41 @@ void _init_pwms(void)
 		       pwm_led0.dev->name);
 	}
 }
+void _init_status_leds(void)
+{
+
+    if (!gpio_is_ready_dt(&statusled1)) {
+		printk("Error LED\n");
+	}
+    if (!gpio_is_ready_dt(&statusled2)) {
+		printk("Error LED\n");
+	}
+    if (!gpio_is_ready_dt(&statusled3)) {
+		printk("Error LED\n");
+	}
+    if (!gpio_is_ready_dt(&statusled4)) {
+		printk("Error LED\n");
+	}
+
+    gpio_pin_configure_dt(&statusled1, GPIO_OUTPUT_ACTIVE);
+    gpio_pin_configure_dt(&statusled2, GPIO_OUTPUT_ACTIVE);
+    gpio_pin_configure_dt(&statusled3, GPIO_OUTPUT_ACTIVE);
+    gpio_pin_configure_dt(&statusled4, GPIO_OUTPUT_ACTIVE);
+
+
+
+    // gpio_pin_set_dt(&statusled1, 0);
+    // gpio_pin_set_dt(&statusled2, 0);
+    // gpio_pin_set_dt(&statusled3, 0);
+    // gpio_pin_set_dt(&statusled4, 0);
+}
 
 void _init_user_interface(void)
 {
 
     _init_user_buttons();
     _init_pwms();
+    _init_status_leds();
 
 }
 

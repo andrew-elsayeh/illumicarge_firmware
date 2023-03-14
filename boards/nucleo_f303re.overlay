@@ -60,10 +60,35 @@
 		};
 	};
 
+	leds {
+		compatible = "gpio-leds";
+		status_led_1: status_led_1{
+			gpios = < &gpioa 8 GPIO_ACTIVE_HIGH >;
+			label = "Status LED1";
+		};
+		status_led_2: status_led_2{
+			gpios = < &gpioa 9 GPIO_ACTIVE_HIGH >;
+			label = "Status LED2";
+		};
+		status_led_3: status_led_3{
+			gpios = < &gpioa 10 GPIO_ACTIVE_HIGH >;
+			label = "Status LED3";
+		};
+		status_led_4: status_led_4{
+			gpios = < &gpioa 11 GPIO_ACTIVE_HIGH >;
+			label = "Status LED4";
+		};
+
+	};
+
 	aliases {
 		tl2 = &user_button_1;
 		tl3 = &user_button_2;
 		pwm-led0 = &pwm_led0;
+		statusled1 = &status_led_1;
+		statusled2 = &status_led_2;
+		statusled3 = &status_led_3;
+		statusled4 = &status_led_4;
 	};
 
 
