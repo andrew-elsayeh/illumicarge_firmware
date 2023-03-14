@@ -103,11 +103,6 @@ void _button_2_cb(const struct device *dev, struct gpio_callback *cb,
     }
     setLEDPWM(led_brightness_percentage);
 
-    gpio_pin_toggle_dt(&statusled1);
-    gpio_pin_toggle_dt(&statusled2);
-    gpio_pin_toggle_dt(&statusled3);
-    gpio_pin_toggle_dt(&statusled4);
-
 }
 
 
@@ -191,10 +186,10 @@ void _init_status_leds(void)
 		printk("Error LED\n");
 	}
 
-    gpio_pin_configure_dt(&statusled1, GPIO_OUTPUT_ACTIVE);
-    gpio_pin_configure_dt(&statusled2, GPIO_OUTPUT_ACTIVE);
-    gpio_pin_configure_dt(&statusled3, GPIO_OUTPUT_ACTIVE);
-    gpio_pin_configure_dt(&statusled4, GPIO_OUTPUT_ACTIVE);
+    gpio_pin_configure_dt(&statusled1, GPIO_OUTPUT_INACTIVE);
+    gpio_pin_configure_dt(&statusled2, GPIO_OUTPUT_INACTIVE);
+    gpio_pin_configure_dt(&statusled3, GPIO_OUTPUT_INACTIVE);
+    gpio_pin_configure_dt(&statusled4, GPIO_OUTPUT_INACTIVE);
 
 
 
@@ -225,6 +220,48 @@ void setLEDPWM( uint32_t percentage)
 {
     uint32_t pulse_width = pwm_led0.period * percentage / 100;
     pwm_set_pulse_dt(&pwm_led0, pulse_width);
+    
+    if(percentage < 10)
+    {
+     gpio_pin_set_dt(&statusled1, 0);   
+     gpio_pin_set_dt(&statusled2, 0);   
+     gpio_pin_set_dt(&statusled3, 0);   
+     gpio_pin_set_dt(&statusled4, 0);
+     return;   
+    }
+    if(percentage <= 25)
+    {
+     gpio_pin_set_dt(&statusled1, 1);   
+     gpio_pin_set_dt(&statusled2, 0);   
+     gpio_pin_set_dt(&statusled3, 0);   
+     gpio_pin_set_dt(&statusled4, 0);
+     return;   
+    }
+    if(percentage <= 50)
+    {
+     gpio_pin_set_dt(&statusled1, 1);   
+     gpio_pin_set_dt(&statusled2, 1);   
+     gpio_pin_set_dt(&statusled3, 0);   
+     gpio_pin_set_dt(&statusled4, 0);  
+     return;
+    }
+    if(percentage <= 75)
+    {
+     gpio_pin_set_dt(&statusled1, 1);   
+     gpio_pin_set_dt(&statusled2, 1);   
+     gpio_pin_set_dt(&statusled3, 1);   
+     gpio_pin_set_dt(&statusled4, 0);  
+          return;
+    }
+    if(percentage > 90)
+    {
+     gpio_pin_set_dt(&statusled1, 1);   
+     gpio_pin_set_dt(&statusled2, 1);   
+     gpio_pin_set_dt(&statusled3, 1);   
+     gpio_pin_set_dt(&statusled4, 1);  
+          return;
+    }
+    
 }
 
 uint8_t initUserInterface(UserInterface_t *UserInterface)
