@@ -7,4 +7,5 @@ project(ADC)
 
 target_sources(app PRIVATE src/main.c)
 target_sources(app PRIVATE src/adc_reader/adc_reader.c)
+target_sources(app PRIVATE src/user_interface/user_interface.c)
 
