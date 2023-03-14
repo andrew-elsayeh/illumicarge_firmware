@@ -69,12 +69,12 @@ void _init_user_interface(void)
 	}
 	if (!gpio_is_ready_dt(&button_1)) {
 		printk("Error: button device %s is not ready\n",
-		       button.port->name);
+		       button_1.port->name);
 		return;
 	}
 	if (!gpio_is_ready_dt(&button_2)) {
 		printk("Error: button device %s is not ready\n",
-		       button.port->name);
+		       button_2.port->name);
 		return;
 	}
 
@@ -82,6 +82,18 @@ void _init_user_interface(void)
 	if (ret != 0) {
 		printk("Error %d: failed to configure %s pin %d\n",
 		       ret, button.port->name, button.pin);
+		return;
+	}
+	ret = gpio_pin_configure_dt(&button_1, GPIO_INPUT);
+	if (ret != 0) {
+		printk("Error %d: failed to configure %s pin %d\n",
+		       ret, button_1.port->name, button_1.pin);
+		return;
+	}
+	ret = gpio_pin_configure_dt(&button_2, GPIO_INPUT);
+	if (ret != 0) {
+		printk("Error %d: failed to configure %s pin %d\n",
+		       ret, button_2.port->name, button_2.pin);
 		return;
 	}
 
