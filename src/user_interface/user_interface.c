@@ -118,9 +118,16 @@ int32_t getLEDBrightnessPercentage(UserInterface_t *self)
     return led_brightness_percentage;
 }
 
+int32_t setLEDPWM(UserInterface_t *self, uint32_t percentage)
+{
+    
+    return led_brightness_percentage;
+}
+
 uint8_t initUserInterface(UserInterface_t *UserInterface)
 {
     UserInterface->getLEDBrightnessPercentage = getLEDBrightnessPercentage;
+    UserInterface->setLEDPWM = setLEDPWM;
 
     _init_user_interface();
 
