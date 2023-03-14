@@ -7,7 +7,7 @@ typedef struct UserInterface UserInterface_t;
 struct UserInterface {
 
 int32_t (*getLEDBrightnessPercentage) (UserInterface_t *self);
-void (*setLEDPWM) (UserInterface_t *self, uint32_t percentage);
+void (*setLEDPWM) (uint32_t percentage);
 
 };
 

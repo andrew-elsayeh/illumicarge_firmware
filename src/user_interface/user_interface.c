@@ -43,15 +43,21 @@ static struct gpio_callback button_2_cb_data;
 void button_1_pressed(const struct device *dev, struct gpio_callback *cb,
 		    uint32_t pins)
 {
-    led_brightness_percentage = led_brightness_percentage + 10;
-	// printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
+    if(led_brightness_percentage < 100)
+    {
+        led_brightness_percentage = led_brightness_percentage + 20;
+    }
+    setLEDPWM(led_brightness_percentage);
 
 }
 void button_2_pressed(const struct device *dev, struct gpio_callback *cb,
 		    uint32_t pins)
 {
-    led_brightness_percentage = led_brightness_percentage - 10;
-	// printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
+    if(led_brightness_percentage > 0)
+    {
+        led_brightness_percentage = led_brightness_percentage - 20;
+    }
+    setLEDPWM(led_brightness_percentage);
 
 }
 
@@ -125,7 +131,7 @@ int32_t getLEDBrightnessPercentage(UserInterface_t *self)
     return led_brightness_percentage;
 }
 
-void setLEDPWM(UserInterface_t *self, uint32_t percentage)
+void setLEDPWM( uint32_t percentage)
 {
     uint32_t pulse_width = pwm_led0.period * percentage / 100;
     pwm_set_pulse_dt(&pwm_led0, pulse_width);
