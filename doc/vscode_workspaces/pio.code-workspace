@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../pbs_workspace/Vildrew_IllumiCharge_Firmware"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"unity.h": "c",
+			"stm32f30x_adc.h": "c",
+			"gpio.h": "c",
+			"adc_reader.h": "c"
+		}
+	}
+}
