@@ -36,12 +36,12 @@ void main(void)
 	// }
 
 	/* For Teting User Input*/
-	// UserInterface_t UserInterface;
-	// initUserInterface(&UserInterface);
+	UserInterface_t UserInterface;
+	initUserInterface(&UserInterface);
 
 	while(1){
 
-		printk("LED Brighness: %d \n", -1);
+		printk("LED Brighness: %d \n", UserInterface.getLEDBrightness(&UserInterface));
 		k_sleep(K_MSEC(100));
 	}
 }

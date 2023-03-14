@@ -7,6 +7,7 @@
         "stddef.h": "c",
         "device.h": "c",
         "adc_reader.h": "c",
-        "inttypes.h": "c"
+        "inttypes.h": "c",
+        "user_interface.h": "c"
     }
 }
