@@ -46,36 +46,36 @@ void main(void)
 	// }
 
 
-	/* For Testing PWM*/
-	UserInterface_t UserInterface;
-	initUserInterface(&UserInterface);
-
-	while(1){
-
-		// printk("LED Brighness Percentage: %d \n", UserInterface.getLEDBrightnessPercentage(&UserInterface));
-
-		UserInterface.setLEDPWM(0);
-		printk("LED should be off.. \n");
-		k_sleep(K_MSEC(1000));
-
-		UserInterface.setLEDPWM(50);
-		printk("LED should be at 50 percent brightness.. \n");		
-		k_sleep(K_MSEC(1000));
-
-		UserInterface.setLEDPWM(100);
-		printk("LED should be at 100 percent brightness.. \n");
-		k_sleep(K_MSEC(1000));
-	}
-
-	// /* For Testing PWM Control*/
+	// /* For Testing PWM*/
 	// UserInterface_t UserInterface;
 	// initUserInterface(&UserInterface);
 
-	// printk("Control PWM with user buttons\n");
 	// while(1){
 
-	// 	printk("LED Brighness Percentage: %d \n", UserInterface.getLEDBrightnessPercentage(&UserInterface));
-	// 	k_sleep(K_MSEC(100));
+	// 	// printk("LED Brighness Percentage: %d \n", UserInterface.getLEDBrightnessPercentage(&UserInterface));
+
+	// 	UserInterface.setLEDPWM(0);
+	// 	printk("LED should be off.. \n");
+	// 	k_sleep(K_MSEC(1000));
+
+	// 	UserInterface.setLEDPWM(50);
+	// 	printk("LED should be at 50 percent brightness.. \n");		
+	// 	k_sleep(K_MSEC(1000));
+
+	// 	UserInterface.setLEDPWM(100);
+	// 	printk("LED should be at 100 percent brightness.. \n");
+	// 	k_sleep(K_MSEC(1000));
+	// }
+
+	/* For Testing PWM Control*/
+	UserInterface_t UserInterface;
+	initUserInterface(&UserInterface);
+
+	printk("Control PWM with user buttons\n");
+	while(1){
+
+		printk("LED Brighness Percentage: %d \n", UserInterface.getLEDBrightnessPercentage(&UserInterface));
+		k_sleep(K_MSEC(100));
 
 	}
 }
