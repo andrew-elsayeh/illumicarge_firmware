@@ -54,12 +54,15 @@ void main(void)
 
 		// printk("LED Brighness Percentage: %d \n", UserInterface.getLEDBrightnessPercentage(&UserInterface));
 
+		UserInterface.setLEDPWM(&UserInterface, 0);
 		printk("LED should be off.. \n");
 		k_sleep(K_MSEC(1000));
 
+		UserInterface.setLEDPWM(&UserInterface, 50);
 		printk("LED should be at 50 percent brightness.. \n");		
 		k_sleep(K_MSEC(1000));
 
+		UserInterface.setLEDPWM(&UserInterface, 100);
 		printk("LED should be at 100 percent brightness.. \n");
 		k_sleep(K_MSEC(1000));
 	}

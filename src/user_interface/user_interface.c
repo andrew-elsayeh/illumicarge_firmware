@@ -8,10 +8,12 @@
 #include <zephyr/sys/printk.h>
 #include <inttypes.h>
 
+#include <zephyr/drivers/pwm.h>
 
 
 uint32_t led_brightness_percentage = 0;
 
+static const struct pwm_dt_spec pwm_led0 = PWM_DT_SPEC_GET(DT_ALIAS(pwm_led0));
 
 
 /*
@@ -108,6 +110,11 @@ void _init_user_interface(void)
 	gpio_init_callback(&button_2_cb_data, button_2_pressed, BIT(button_2.pin));
 	gpio_add_callback(button_2.port, &button_2_cb_data);
 
+
+	if (!device_is_ready(pwm_led0.dev)) {
+		printk("Error: PWM device %s is not ready\n",
+		       pwm_led0.dev->name);
+	}
 }
 
 
@@ -118,10 +125,10 @@ int32_t getLEDBrightnessPercentage(UserInterface_t *self)
     return led_brightness_percentage;
 }
 
-int32_t setLEDPWM(UserInterface_t *self, uint32_t percentage)
+void setLEDPWM(UserInterface_t *self, uint32_t percentage)
 {
-    
-    return led_brightness_percentage;
+    uint32_t pulse_width = pwm_led0.period * percentage / 100;
+    pwm_set_pulse_dt(&pwm_led0, pulse_width);
 }
 
 uint8_t initUserInterface(UserInterface_t *UserInterface)
