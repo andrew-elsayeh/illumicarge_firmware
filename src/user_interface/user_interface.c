@@ -56,6 +56,20 @@ void button_pressed(const struct device *dev, struct gpio_callback *cb,
 	// printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
 
 }
+void button_1_pressed(const struct device *dev, struct gpio_callback *cb,
+		    uint32_t pins)
+{
+    led_brightness_percentage = led_brightness_percentage + 10;
+	// printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
+
+}
+void button_2_pressed(const struct device *dev, struct gpio_callback *cb,
+		    uint32_t pins)
+{
+    led_brightness_percentage = led_brightness_percentage - 10;
+	// printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
+
+}
 
 
 void _init_user_interface(void)
@@ -107,6 +121,30 @@ void _init_user_interface(void)
 
 	gpio_init_callback(&button_cb_data, button_pressed, BIT(button.pin));
 	gpio_add_callback(button.port, &button_cb_data);
+    
+
+	ret = gpio_pin_interrupt_configure_dt(&button_1,
+					      GPIO_INT_EDGE_TO_ACTIVE);
+	if (ret != 0) {
+		printk("Error %d: failed to configure interrupt on %s pin %d\n",
+			ret, button_1.port->name, button_1.pin);
+		return;
+	}
+
+	gpio_init_callback(&button_1_cb_data, button_1_pressed, BIT(button_1.pin));
+	gpio_add_callback(button_1.port, &button_1_cb_data);
+
+	ret = gpio_pin_interrupt_configure_dt(&button_2,
+					      GPIO_INT_EDGE_TO_ACTIVE);
+	if (ret != 0) {
+		printk("Error %d: failed to configure interrupt on %s pin %d\n",
+			ret, button_2.port->name, button_2.pin);
+		return;
+	}
+
+	gpio_init_callback(&button_2_cb_data, button_2_pressed, BIT(button_2.pin));
+	gpio_add_callback(button_2.port, &button_2_cb_data);
+
 }
 
 
