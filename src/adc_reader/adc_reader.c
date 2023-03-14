@@ -1,7 +1,4 @@
-
-#include <inttypes.h>
-#include <stddef.h>
-#include <stdint.h>
+#include "adc_reader.h"
 
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
@@ -10,14 +7,8 @@
 #include <zephyr/sys/printk.h>
 #include <zephyr/sys/util.h>
 
-#include "adc_reader.h"
 
-//Private Variables of the Class
-// int32_t ADC1_mV;
-// int32_t ADC2_mV;
-// int32_t V_BAT_TEMP_ADC_mV;
-// int32_t V_BAT_ADC_mV;
-// int32_t BAT_CUR_mV;
+
 
 
 enum adc_channels {
@@ -32,6 +23,7 @@ int32_t _adc_channels_mv[5];
 
 
 
+void init_adc_reader(void);
 
 
 
@@ -78,39 +70,39 @@ void init_adc_reader(void)
 
 }
 
-void readAndPrintAllChannels(void)
-{
+// void readAndPrintAllChannels(void)
+// {
 
-    // printk("ADC reading:\n");
-    for (size_t i = 0U; i < ARRAY_SIZE(adc_channels); i++) {
-        int32_t val_mv;
+//     // printk("ADC reading:\n");
+//     for (size_t i = 0U; i < ARRAY_SIZE(adc_channels); i++) {
+//         int32_t val_mv;
 
-        printk("- %s, channel %d: ",
-                adc_channels[i].dev->name,
-                adc_channels[i].channel_id);
+//         printk("- %s, channel %d: ",
+//                 adc_channels[i].dev->name,
+//                 adc_channels[i].channel_id);
 
-        (void)adc_sequence_init_dt(&adc_channels[i], &sequence);
+//         (void)adc_sequence_init_dt(&adc_channels[i], &sequence);
 
-        err = adc_read(adc_channels[i].dev, &sequence);
-        if (err < 0) {
-            printk("Could not read (%d)\n", err);
-            continue;
-        } else {
-            printk("%"PRIu16, buf);
-        }
+//         err = adc_read(adc_channels[i].dev, &sequence);
+//         if (err < 0) {
+//             printk("Could not read (%d)\n", err);
+//             continue;
+//         } else {
+//             printk("%"PRIu16, buf);
+//         }
 
-        /* conversion to mV may not be supported, skip if not */
-        val_mv = buf;
-        err = adc_raw_to_millivolts_dt(&adc_channels[i],
-                            &val_mv);
-        if (err < 0) {
-            printk(" (value in mV not available)\n");
-        } else {
-            printk(" = %"PRId32" mV\n", val_mv);
-        }
-    }
+//         /* conversion to mV may not be supported, skip if not */
+//         val_mv = buf;
+//         err = adc_raw_to_millivolts_dt(&adc_channels[i],
+//                             &val_mv);
+//         if (err < 0) {
+//             printk(" (value in mV not available)\n");
+//         } else {
+//             printk(" = %"PRId32" mV\n", val_mv);
+//         }
+//     }
 
-}
+// }
 
 
 void updateReadings(void)
