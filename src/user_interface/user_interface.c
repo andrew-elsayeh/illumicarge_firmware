@@ -10,12 +10,6 @@
 
 #include <zephyr/drivers/pwm.h>
 
-
-uint32_t led_brightness_percentage = 0;
-
-static const struct pwm_dt_spec pwm_led0 = PWM_DT_SPEC_GET(DT_ALIAS(pwm_led0));
-
-
 /*
  * Get button configuration from the devicetree tl2 alias.
  */
@@ -23,9 +17,6 @@ static const struct pwm_dt_spec pwm_led0 = PWM_DT_SPEC_GET(DT_ALIAS(pwm_led0));
 #if !DT_NODE_HAS_STATUS(TL2_NODE, okay)
 #error "Unsupported board: tl2 devicetree alias is not defined"
 #endif
-static const struct gpio_dt_spec button_1 = GPIO_DT_SPEC_GET_OR(TL2_NODE, gpios,
-							      {0});
-static struct gpio_callback button_1_cb_data;
 
 
 /*
@@ -35,12 +26,52 @@ static struct gpio_callback button_1_cb_data;
 #if !DT_NODE_HAS_STATUS(TL2_NODE, okay)
 #error "Unsupported board: tl3 devicetree alias is not defined"
 #endif
+
+
+
+
+// Public Methods
+void setLEDPWM( uint32_t percentage);
+int32_t getLEDBrightnessPercentage(UserInterface_t *self);
+////////////////////
+
+
+//Private Methods
+void _init_user_buttons(void);
+void _init_pwms(void);
+void _init_user_interface(void);
+
+void _button_1_cb(const struct device *dev, struct gpio_callback *cb,
+		    uint32_t pins);
+void _button_2_cb(const struct device *dev, struct gpio_callback *cb,
+		    uint32_t pins);
+////////////////////
+
+
+
+// Public Members////////////////////
+////////////////////////////////////////
+
+
+
+// Private Members//
+uint32_t led_brightness_percentage = 0;
+
+
+static const struct pwm_dt_spec pwm_led0 = PWM_DT_SPEC_GET(DT_ALIAS(pwm_led0));
+
+
+static const struct gpio_dt_spec button_1 = GPIO_DT_SPEC_GET_OR(TL2_NODE, gpios,
+							      {0});
+static struct gpio_callback button_1_cb_data;
+
 static const struct gpio_dt_spec button_2 = GPIO_DT_SPEC_GET_OR(TL3_NODE, gpios,
 							      {0});
 static struct gpio_callback button_2_cb_data;
+////////////////////
 
 
-void button_1_pressed(const struct device *dev, struct gpio_callback *cb,
+void _button_1_cb(const struct device *dev, struct gpio_callback *cb,
 		    uint32_t pins)
 {
     if(led_brightness_percentage < 100)
@@ -50,7 +81,7 @@ void button_1_pressed(const struct device *dev, struct gpio_callback *cb,
     setLEDPWM(led_brightness_percentage);
 
 }
-void button_2_pressed(const struct device *dev, struct gpio_callback *cb,
+void _button_2_cb(const struct device *dev, struct gpio_callback *cb,
 		    uint32_t pins)
 {
     if(led_brightness_percentage > 0)
@@ -62,7 +93,7 @@ void button_2_pressed(const struct device *dev, struct gpio_callback *cb,
 }
 
 
-void _init_user_interface(void)
+void _init_user_buttons(void)
 {
     int ret;
 
@@ -102,7 +133,7 @@ void _init_user_interface(void)
 		return;
 	}
 
-	gpio_init_callback(&button_1_cb_data, button_1_pressed, BIT(button_1.pin));
+	gpio_init_callback(&button_1_cb_data, _button_1_cb, BIT(button_1.pin));
 	gpio_add_callback(button_1.port, &button_1_cb_data);
 
 	ret = gpio_pin_interrupt_configure_dt(&button_2,
@@ -113,14 +144,26 @@ void _init_user_interface(void)
 		return;
 	}
 
-	gpio_init_callback(&button_2_cb_data, button_2_pressed, BIT(button_2.pin));
+	gpio_init_callback(&button_2_cb_data, _button_2_cb, BIT(button_2.pin));
 	gpio_add_callback(button_2.port, &button_2_cb_data);
 
 
+}
+
+void _init_pwms(void)
+{
 	if (!device_is_ready(pwm_led0.dev)) {
 		printk("Error: PWM device %s is not ready\n",
 		       pwm_led0.dev->name);
 	}
+}
+
+void _init_user_interface(void)
+{
+
+    _init_user_buttons();
+    _init_pwms();
+
 }
 
 
