@@ -1,16 +1,18 @@
 #include "user_interface.h"
 
 
+uint32_t led_brightness_percentage = -5;
 
-int32_t getLEDBrightness(UserInterface_t *self)
+
+int32_t getLEDBrightnessPercentage(UserInterface_t *self)
 {
     
-    return -2;
+    return led_brightness_percentage;
 }
 
 uint8_t initUserInterface(UserInterface_t *UserInterface)
 {
-    UserInterface->getLEDBrightness = getLEDBrightness;
+    UserInterface->getLEDBrightnessPercentage = getLEDBrightnessPercentage;
 
     return 0;
 

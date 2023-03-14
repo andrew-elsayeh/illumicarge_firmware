@@ -6,7 +6,7 @@ typedef struct UserInterface UserInterface_t;
 
 struct UserInterface {
 
-int32_t (*getLEDBrightness) (UserInterface_t *self);
+int32_t (*getLEDBrightnessPercentage) (UserInterface_t *self);
 
 };
 

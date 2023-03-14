@@ -41,7 +41,7 @@ void main(void)
 
 	while(1){
 
-		printk("LED Brighness: %d \n", UserInterface.getLEDBrightness(&UserInterface));
+		printk("LED Brighness Percentage: %d \n", UserInterface.getLEDBrightnessPercentage(&UserInterface));
 		k_sleep(K_MSEC(100));
 	}
 }
