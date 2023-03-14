@@ -14,8 +14,6 @@ uint32_t led_brightness_percentage = 0;
 
 
 
-#define SLEEP_TIME_MS	1
-
 /*
  * Get button configuration from the devicetree sw0 alias. This is mandatory.
  */
@@ -28,11 +26,28 @@ static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET_OR(SW0_NODE, gpios,
 static struct gpio_callback button_cb_data;
 
 /*
- * The led0 devicetree alias is optional. If present, we'll use it
- * to turn on the LED whenever the button is pressed.
+ * Get button configuration from the devicetree tl2 alias.
  */
-static struct gpio_dt_spec led = GPIO_DT_SPEC_GET_OR(DT_ALIAS(led0), gpios,
-						     {0});
+#define TL2_NODE	DT_ALIAS(tl2)
+#if !DT_NODE_HAS_STATUS(TL2_NODE, okay)
+#error "Unsupported board: tl2 devicetree alias is not defined"
+#endif
+static const struct gpio_dt_spec button_1 = GPIO_DT_SPEC_GET_OR(TL2_NODE, gpios,
+							      {0});
+static struct gpio_callback button_1_cb_data;
+
+
+/*
+ * Get button configuration from the devicetree tl3 alias.
+ */
+#define TL3_NODE	DT_ALIAS(tl3)
+#if !DT_NODE_HAS_STATUS(TL2_NODE, okay)
+#error "Unsupported board: tl3 devicetree alias is not defined"
+#endif
+static const struct gpio_dt_spec button_2 = GPIO_DT_SPEC_GET_OR(TL3_NODE, gpios,
+							      {0});
+static struct gpio_callback button_2_cb_data;
+
 
 void button_pressed(const struct device *dev, struct gpio_callback *cb,
 		    uint32_t pins)
@@ -48,6 +63,16 @@ void _init_user_interface(void)
     int ret;
 
 	if (!gpio_is_ready_dt(&button)) {
+		printk("Error: button device %s is not ready\n",
+		       button.port->name);
+		return;
+	}
+	if (!gpio_is_ready_dt(&button_1)) {
+		printk("Error: button device %s is not ready\n",
+		       button.port->name);
+		return;
+	}
+	if (!gpio_is_ready_dt(&button_2)) {
 		printk("Error: button device %s is not ready\n",
 		       button.port->name);
 		return;
