@@ -36,10 +36,8 @@ static const struct gpio_dt_spec charging_switch =
  * Class Public Methods
  */
 void setLoad(bool status);
-bool getLoadStatus(void);
 
 void setBatteryCharger(bool status);
-bool getBatteryChargerStatus(void);
 
 
 void _init_power_path_controller(void)
@@ -69,37 +67,40 @@ void _init_power_path_controller(void)
     
 }
 void setLoad(bool status)
-{
+{	
     int err;
     err = gpio_pin_set_dt(&load_switch, status);
 	if (err != 0) {
 		printk("Setting GPIO pin level failed: %d\n", err);
 	}
 }
-bool getLoadStatus(void)
-{
-    return (bool)gpio_pin_get_dt(&load_switch);
-}
 
 void setBatteryCharger(bool status)
 {
     int err;
-    err = gpio_pin_set_dt(&charging_switch, status);
-	if (err != 0) {
-		printk("Setting GPIO pin level failed: %d\n", err);
+	if (status == true)	//if the battery should charge
+	{
+		err = gpio_pin_configure_dt(&charging_switch, GPIO_INPUT);
+		if (err != 0) {
+			printk("Configuring GPIO pin failed: %d\n", err);
+			return;
+		}
 	}
+	else if (status == false)
+	{	
+		err = gpio_pin_configure_dt(&charging_switch, GPIO_OUTPUT_INACTIVE);
+		if (err != 0) {
+			printk("Setting Battery Charger Failed: %d\n", err);
+		}
+
+	}
+	
 }
 
-bool getBatteryChargerStatus(void)
-{
-    return (bool)gpio_pin_get_dt(&charging_switch);
-}
 
 
 void initPowerPathController(PowerPathController_t *self)
 {
-    self->getBatteryChargerStatus = getBatteryChargerStatus;
-    self->getLoadStatus = getLoadStatus;
     self->setBatteryCharger = setBatteryCharger;
     self->setLoad = setLoad;
 

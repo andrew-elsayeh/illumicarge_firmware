@@ -131,6 +131,7 @@ void test_pwm_controller(void)
 
 void test_power_path_controller(void)
 {
+	clear_console();
 	/*Power Path Controller Unit Test*/
 
 	PowerPathController_t PowerPathController;
@@ -138,35 +139,28 @@ void test_power_path_controller(void)
 
 
 	while(1){
-		clear_console();
+
 		printk("Power Path Controller Test: check connected logic analyzer\n");
-		k_sleep(K_MSEC(1000));
 
-		clear_console();
-		printk("Power Path Controller Test: check connected logic analyzer\n");
-		printk("Turning on load.. ");
-		PowerPathController.setLoad(true);
-		printk("Status of load: %d\n", (int)PowerPathController.getLoadStatus());
-
-		k_sleep(K_MSEC(1000));
-		
-		printk("Turning on charging.. ");
-		PowerPathController.setBatteryCharger(true);
-		printk("Status of charging: %d\n", (int)PowerPathController.getBatteryChargerStatus());
-
-		k_sleep(K_MSEC(1000));
+		printk("\n");
 
 
-		printk("Turning off load.. ");
-		PowerPathController.setLoad(false);
-		printk("Status of load: %d\n", (int)PowerPathController.getLoadStatus());
-
-		k_sleep(K_MSEC(1000));
-		printk("Turning off charging.. ");
+		printk("Turning Charging off for 2 seconds: PROG/PC12) should be high \n");
 		PowerPathController.setBatteryCharger(false);
-		printk("Status of charging: %d\n", (int)PowerPathController.getBatteryChargerStatus());
+		k_sleep(K_MSEC(2000));
+		printk("Turning Charging off: (PROG (PC12) should be low bec of 2K Pulldown\n");
+		PowerPathController.setBatteryCharger(true);
+		printk("\n");
 
+		k_sleep(K_MSEC(500));
+
+		printk("Turning Load On for 1 Second: EN2 (PC11) should be High).. \n");
+		PowerPathController.setLoad(true);
 		k_sleep(K_MSEC(1000));
+		printk("Turning Load Off: EN2 (PC11) should be Low).. \n");
+		PowerPathController.setLoad(false);
+		
+		k_sleep(K_MSEC(5000*5000));
 	}
 }
 

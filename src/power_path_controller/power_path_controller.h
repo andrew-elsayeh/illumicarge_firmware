@@ -7,10 +7,9 @@ typedef struct PowerPathController PowerPathController_t;
 struct PowerPathController {
 
     void (*setLoad)(bool status);
-    bool (*getLoadStatus)(void);
 
+    //This sets the PROG pin that should be connected to PC12. When High, the battery charger turns off
     void (*setBatteryCharger)(bool status);
-    bool (*getBatteryChargerStatus)(void);
 
 };
 
