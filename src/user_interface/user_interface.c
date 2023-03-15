@@ -26,6 +26,14 @@
 #define STATUS_LED4_NODE DT_ALIAS(statusled4)
 
 /**
+ * Public Methods
+ */
+
+void setStatusLEDs( uint32_t percentage);
+uint32_t getUserInputLEDBrightnessPercent(void);
+
+
+/**
  * Private Methods
  */
 

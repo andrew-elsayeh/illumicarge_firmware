@@ -12,10 +12,4 @@ struct UserInterface {
 
 };
 
-/**
- * Public Methods
- */
-
 void initUserInterface(UserInterface_t *UserInterface);
-void setStatusLEDs( uint32_t percentage);
-uint32_t getUserInputLEDBrightnessPercent(void);
