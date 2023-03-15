@@ -35,15 +35,15 @@ void main(void)
 	// 	k_sleep(K_MSEC(100));
 	// }
 
-	// /* For Teting User Input*/
-	// UserInterface_t UserInterface;
-	// initUserInterface(&UserInterface);
+	/* For Teting User Input*/
+	UserInterface_t UserInterface;
+	initUserInterface(&UserInterface);
 
-	// while(1){
+	while(1){
 
-	// 	printk("LED Brighness Percentage: %d \n", UserInterface.getLEDBrightnessPercentage(&UserInterface));
-	// 	k_sleep(K_MSEC(100));
-	// }
+		printk("User Input LED Brighness Percentage: %d \n", UserInterface.getUserInputLEDBrightnessPercent());
+		k_sleep(K_MSEC(100));
+	}
 
 
 	// /* For Testing PWM*/
@@ -67,15 +67,15 @@ void main(void)
 	// 	k_sleep(K_MSEC(1000));
 	// }
 
-	/* For Testing PWM Control*/
-	UserInterface_t UserInterface;
-	initUserInterface(&UserInterface);
+	// /* For Testing PWM Control*/
+	// UserInterface_t UserInterface;
+	// initUserInterface(&UserInterface);
 
-	printk("Control PWM with user buttons\n");
-	while(1){
+	// printk("Control PWM with user buttons\n");
+	// while(1){
 
-		printk("LED Brighness Percentage: %d \n", UserInterface.getLEDBrightnessPercentage(&UserInterface));
-		k_sleep(K_MSEC(100));
+	// 	printk("LED Brighness Percentage: %d \n", UserInterface.getLEDBrightnessPercentage(&UserInterface));
+	// 	k_sleep(K_MSEC(100));
 
-	}
+	// }
 }

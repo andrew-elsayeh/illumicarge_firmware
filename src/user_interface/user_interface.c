@@ -8,41 +8,27 @@
 #include <zephyr/sys/printk.h>
 #include <inttypes.h>
 
-#include <zephyr/drivers/pwm.h>
-
-/*
- * Get button configuration from the devicetree tl2 alias.
+/**
+ * Defines
  */
 #define TL2_NODE	DT_ALIAS(tl2)
 #if !DT_NODE_HAS_STATUS(TL2_NODE, okay)
 #error "Unsupported board: tl2 devicetree alias is not defined"
 #endif
-
-
-/*
- * Get button configuration from the devicetree tl3 alias.
- */
 #define TL3_NODE	DT_ALIAS(tl3)
 #if !DT_NODE_HAS_STATUS(TL2_NODE, okay)
 #error "Unsupported board: tl3 devicetree alias is not defined"
 #endif
-
 
 #define STATUS_LED1_NODE DT_ALIAS(statusled1)
 #define STATUS_LED2_NODE DT_ALIAS(statusled2)
 #define STATUS_LED3_NODE DT_ALIAS(statusled3)
 #define STATUS_LED4_NODE DT_ALIAS(statusled4)
 
+/**
+ * Private Methods
+ */
 
-
-
-// Public Methods
-void setLEDPWM( uint32_t percentage);
-int32_t getLEDBrightnessPercentage(UserInterface_t *self);
-////////////////////
-
-
-//Private Methods
 void _init_user_buttons(void);
 void _init_pwms(void);
 void _init_user_interface(void);
@@ -52,20 +38,14 @@ void _button_1_cb(const struct device *dev, struct gpio_callback *cb,
 		    uint32_t pins);
 void _button_2_cb(const struct device *dev, struct gpio_callback *cb,
 		    uint32_t pins);
-////////////////////
 
 
 
-// Public Members////////////////////
-////////////////////////////////////////
+/**
+ * Private Members
+ */
+uint32_t user_input_led_brightness_percent;
 
-
-
-// Private Members//
-uint32_t led_brightness_percentage = 0;
-
-
-static const struct pwm_dt_spec pwm_led0 = PWM_DT_SPEC_GET(DT_ALIAS(pwm_led0));
 
 
 static const struct gpio_dt_spec button_1 = GPIO_DT_SPEC_GET_OR(TL2_NODE, gpios,
@@ -81,27 +61,28 @@ static const struct gpio_dt_spec statusled1 = GPIO_DT_SPEC_GET(STATUS_LED1_NODE,
 static const struct gpio_dt_spec statusled2 = GPIO_DT_SPEC_GET(STATUS_LED2_NODE, gpios);
 static const struct gpio_dt_spec statusled3 = GPIO_DT_SPEC_GET(STATUS_LED3_NODE, gpios);
 static const struct gpio_dt_spec statusled4 = GPIO_DT_SPEC_GET(STATUS_LED4_NODE, gpios);
-////////////////////
+
 
 
 void _button_1_cb(const struct device *dev, struct gpio_callback *cb,
 		    uint32_t pins)
 {
-    if(led_brightness_percentage < 100)
+    if(user_input_led_brightness_percent < 100)
     {
-        led_brightness_percentage = led_brightness_percentage + 25;
+        user_input_led_brightness_percent = user_input_led_brightness_percent + 25;
     }
-    setLEDPWM(led_brightness_percentage);
+    setStatusLEDs(user_input_led_brightness_percent);
 
 }
+
 void _button_2_cb(const struct device *dev, struct gpio_callback *cb,
 		    uint32_t pins)
 {
-    if(led_brightness_percentage > 0)
+    if(user_input_led_brightness_percent > 0)
     {
-        led_brightness_percentage = led_brightness_percentage - 25;
+        user_input_led_brightness_percent = user_input_led_brightness_percent - 25;
     }
-    setLEDPWM(led_brightness_percentage);
+    setStatusLEDs(user_input_led_brightness_percent);
 
 }
 
@@ -163,13 +144,6 @@ void _init_user_buttons(void)
 
 }
 
-void _init_pwms(void)
-{
-	if (!device_is_ready(pwm_led0.dev)) {
-		printk("Error: PWM device %s is not ready\n",
-		       pwm_led0.dev->name);
-	}
-}
 void _init_status_leds(void)
 {
 
@@ -191,36 +165,22 @@ void _init_status_leds(void)
     gpio_pin_configure_dt(&statusled3, GPIO_OUTPUT_INACTIVE);
     gpio_pin_configure_dt(&statusled4, GPIO_OUTPUT_INACTIVE);
 
-
-
-    // gpio_pin_set_dt(&statusled1, 0);
-    // gpio_pin_set_dt(&statusled2, 0);
-    // gpio_pin_set_dt(&statusled3, 0);
-    // gpio_pin_set_dt(&statusled4, 0);
 }
 
 void _init_user_interface(void)
 {
 
     _init_user_buttons();
-    _init_pwms();
     _init_status_leds();
 
 }
 
 
 
-int32_t getLEDBrightnessPercentage(UserInterface_t *self)
-{
-    
-    return led_brightness_percentage;
-}
 
-void setLEDPWM( uint32_t percentage)
+
+void setStatusLEDs( uint32_t percentage)
 {
-    uint32_t pulse_width = pwm_led0.period * percentage / 100;
-    pwm_set_pulse_dt(&pwm_led0, pulse_width);
-    
     if(percentage < 10)
     {
      gpio_pin_set_dt(&statusled1, 0);   
@@ -264,13 +224,17 @@ void setLEDPWM( uint32_t percentage)
     
 }
 
-uint8_t initUserInterface(UserInterface_t *UserInterface)
+uint32_t getUserInputLEDBrightnessPercent(void)
 {
-    UserInterface->getLEDBrightnessPercentage = getLEDBrightnessPercentage;
-    UserInterface->setLEDPWM = setLEDPWM;
+    return user_input_led_brightness_percent;
+}
+
+void initUserInterface(UserInterface_t *UserInterface)
+{
+    UserInterface->user_input_led_brightness_percent = 0;
+    UserInterface->setStatusLEDs = setStatusLEDs;
+    UserInterface->getUserInputLEDBrightnessPercent = getUserInputLEDBrightnessPercent;
 
     _init_user_interface();
-
-    return 0;
 
 }
