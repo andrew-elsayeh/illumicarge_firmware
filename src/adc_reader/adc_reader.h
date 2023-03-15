@@ -1,3 +1,6 @@
+#ifndef ADC_READER_H
+#define ADC_READER_H
+
 #include <inttypes.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -20,3 +23,4 @@ uint8_t initADCReader(ADCReader_t *ADCReader);
 
 
 // void readAndPrintAllChannels(void);
+#endif /* ADC_READER_H */

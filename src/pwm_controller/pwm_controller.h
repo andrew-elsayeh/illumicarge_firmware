@@ -1,3 +1,8 @@
+#ifndef PWM_CONTROLLER_H
+#define PWM_CONTROLLER_H
+// Your library header content goes here
+
+
 #include <inttypes.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -12,3 +17,4 @@ struct PWMController {
 
 
 void initPWMController(PWMController_t *self);
+#endif /* PWM_CONTROLLER_H */

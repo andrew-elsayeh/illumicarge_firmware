@@ -1,6 +1,9 @@
+#ifndef POWER_PATH_CONTROLLER_H
+#define POWER_PATH_CONTROLLER_H
 #include <inttypes.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef struct PowerPathController PowerPathController_t;
 
@@ -16,3 +19,4 @@ struct PowerPathController {
 
 void initPowerPathController(PowerPathController_t *self);
 
+#endif /* POWER_PATH_CONTROLLER_H */

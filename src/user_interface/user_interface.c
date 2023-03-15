@@ -25,6 +25,8 @@
 #define STATUS_LED3_NODE DT_ALIAS(statusled3)
 #define STATUS_LED4_NODE DT_ALIAS(statusled4)
 
+
+
 /**
  * Public Methods
  */
@@ -53,6 +55,7 @@ void _button_2_cb(const struct device *dev, struct gpio_callback *cb,
  * Private Members
  */
 uint32_t user_input_led_brightness_percent;
+PWMController_t *_PWMController = NULL;
 
 
 
@@ -80,6 +83,11 @@ void _button_1_cb(const struct device *dev, struct gpio_callback *cb,
         user_input_led_brightness_percent = user_input_led_brightness_percent + 25;
     }
 
+    if(_PWMController != NULL)
+    {
+        _PWMController->setLEDBrightness(user_input_led_brightness_percent);
+    }
+
 }
 
 void _button_2_cb(const struct device *dev, struct gpio_callback *cb,
@@ -88,6 +96,11 @@ void _button_2_cb(const struct device *dev, struct gpio_callback *cb,
     if(user_input_led_brightness_percent > 0)
     {
         user_input_led_brightness_percent = user_input_led_brightness_percent - 25;
+    }
+
+    if(_PWMController != NULL)
+    {
+        _PWMController->setLEDBrightness(user_input_led_brightness_percent);
     }
 
 }
@@ -235,12 +248,14 @@ uint32_t getUserInputLEDBrightnessPercent(void)
     return user_input_led_brightness_percent;
 }
 
-void initUserInterface(UserInterface_t *UserInterface)
+void initUserInterface(UserInterface_t *self, PWMController_t *PWMController)
 {
-    UserInterface->user_input_led_brightness_percent = 0;
-    UserInterface->setStatusLEDs = setStatusLEDs;
-    UserInterface->getUserInputLEDBrightnessPercent = getUserInputLEDBrightnessPercent;
+    self->PWMController = PWMController;
+    self->user_input_led_brightness_percent = 0;
+    self->setStatusLEDs = setStatusLEDs;
+    self->getUserInputLEDBrightnessPercent = getUserInputLEDBrightnessPercent;
 
+    _PWMController = PWMController;
     _init_user_interface();
 
 }
