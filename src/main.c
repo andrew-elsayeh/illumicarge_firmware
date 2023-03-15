@@ -25,7 +25,7 @@
 void main(void)
 {
 
-	// /* For Testing ADC Reader*/
+	// /* ADC Reader Unit Tets*/
 	// ADCReader_t ADCReader;
 	// initADCReader(&ADCReader);
 	// while (1) {	
@@ -37,18 +37,23 @@ void main(void)
 	// 	k_sleep(K_MSEC(100));
 	// }
 
-	// /* For Teting User Input*/
+	// /*User Interface Integration Test*/
 	// UserInterface_t UserInterface;
 	// initUserInterface(&UserInterface);
+	// printk("User Interface Test: Displays user input and sets the status led based percentage input \n");
+
 
 	// while(1){
 
-	// 	printk("User Input LED Brighness Percentage: %d \n", UserInterface.getUserInputLEDBrightnessPercent());
-	// 	k_sleep(K_MSEC(100));
+	// 	uint32_t user_input = UserInterface.getUserInputLEDBrightnessPercent();
+	// 	printk("User Input LED Brighness Percentage: %d \n", user_input);
+	// 	UserInterface.setStatusLEDs(user_input);
+
+	// 	k_sleep(K_MSEC(20));
 	// }
 
 
-	/* For Testing PWM*/
+	/*PWM Controller Unit Test*/
 	PWMController_t PWMController;
 	initPWMController(&PWMController);
 

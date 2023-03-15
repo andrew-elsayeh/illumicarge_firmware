@@ -71,7 +71,6 @@ void _button_1_cb(const struct device *dev, struct gpio_callback *cb,
     {
         user_input_led_brightness_percent = user_input_led_brightness_percent + 25;
     }
-    setStatusLEDs(user_input_led_brightness_percent);
 
 }
 
@@ -82,7 +81,6 @@ void _button_2_cb(const struct device *dev, struct gpio_callback *cb,
     {
         user_input_led_brightness_percent = user_input_led_brightness_percent - 25;
     }
-    setStatusLEDs(user_input_led_brightness_percent);
 
 }
 
