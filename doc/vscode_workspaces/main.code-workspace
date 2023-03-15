@@ -16,7 +16,8 @@
 			"inttypes.h": "c",
 			"user_interface.h": "c",
 			"pwm_controller.h": "c",
-			"power_path_controller.h": "c"
+			"power_path_controller.h": "c",
+			"console.h": "c"
 		}
 	}
 }
