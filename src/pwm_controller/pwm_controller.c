@@ -36,7 +36,7 @@ void _init_pwms(void)
 }
 
 
-int32_t getLEDBrightnessPercentage(void)
+uint32_t getLEDBrightnessPercentage(void)
 {
     
     return led_brightness_percentage;
@@ -44,6 +44,7 @@ int32_t getLEDBrightnessPercentage(void)
 
 void setLEDBrightness( uint32_t percentage)
 {
+    led_brightness_percentage = percentage;
     uint32_t pulse_width = pwm_led0.period * percentage / 100;
     pwm_set_pulse_dt(&pwm_led0, pulse_width);
     

@@ -52,32 +52,22 @@ void main(void)
 	PWMController_t PWMController;
 	initPWMController(&PWMController);
 
-	printk("LED should fade on and off.. \n");
+	printk("LED should fade on and off and brightness displayed on terminal.. \n");
 
 	while(1){
 		
 		for(int i = 0;i < 100; i++)
 		{
 			PWMController.setLEDBrightness(i);
-			k_sleep(K_MSEC(5));
+			printk("Brightness: %d \n", PWMController.getLEDBrightnessPercentage());
+			k_sleep(K_MSEC(10));
 		}
 		for(int i = 0;i < 100; i++)
 		{
 			PWMController.setLEDBrightness(100-i);
-			k_sleep(K_MSEC(5));
+			printk("Brightness: %d \n", PWMController.getLEDBrightnessPercentage());
+			k_sleep(K_MSEC(10));
 		}
-
 	}
 
-	// /* For Testing PWM Control*/
-	// UserInterface_t UserInterface;
-	// initUserInterface(&UserInterface);
-
-	// printk("Control PWM with user buttons\n");
-	// while(1){
-
-	// 	printk("LED Brighness Percentage: %d \n", UserInterface.getLEDBrightnessPercentage(&UserInterface));
-	// 	k_sleep(K_MSEC(100));
-
-	// }
 }
