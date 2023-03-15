@@ -1,9 +1,4 @@
 
-#include "adc_reader/adc_reader.h"
-#include "user_interface/user_interface.h"
-#include "pwm_controller/pwm_controller.h"
-#include "power_path_controller/power_path_controller.h"
-
 
 void clear_console(void);
 

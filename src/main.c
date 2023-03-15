@@ -3,5 +3,11 @@
 
 void main(void)
 {
-	test_battery_monitor();	
+	// test_adc_loop();
+	while(1)
+	{
+		test_battery_monitor();	
+		k_msleep(1000);
+
+	}
 }

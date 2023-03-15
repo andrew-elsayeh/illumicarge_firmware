@@ -17,7 +17,8 @@
 			"user_interface.h": "c",
 			"pwm_controller.h": "c",
 			"power_path_controller.h": "c",
-			"console.h": "c"
+			"console.h": "c",
+			"battery_monitor.h": "c"
 		}
 	}
 }

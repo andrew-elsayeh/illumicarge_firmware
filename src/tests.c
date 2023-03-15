@@ -11,9 +11,13 @@
 #include <zephyr/sys/printk.h>
 #include <zephyr/sys/util.h>
 
-
 #include "tests.h"
 
+#include "adc_reader/adc_reader.h"
+#include "user_interface/user_interface.h"
+#include "pwm_controller/pwm_controller.h"
+#include "power_path_controller/power_path_controller.h"
+#include "battery_monitor/battery_monitor.h"
 
 void test_end_to_end(void)
 {
@@ -94,8 +98,8 @@ void test_adc(void)
 
 	printk("ADC1: %5dmV     ", ADCReader.getADC1_mV(&ADCReader));
 	printk("ADC2: %5dmV     ", ADCReader.getADC2_mV(&ADCReader));
-	printk("V_BAT_ADC: %5dmV     ", ADCReader.getV_BAT_TEMP_ADC_mV(&ADCReader));
-	printk("V_BAT_TEMP_ADC: %5dmV     ", ADCReader.getV_BAT_ADC_mV(&ADCReader));
+	printk("V_BAT_ADC: %5dmV     ", ADCReader.getV_BAT_ADC_mV(&ADCReader));
+	printk("V_BAT_TEMP_ADC: %5dmV     ", ADCReader.getV_BAT_TEMP_ADC_mV(&ADCReader));
 	printk("BAT_CUR: %5dmV\n", ADCReader.getBAT_CUR_mV(&ADCReader));
 
 }
@@ -205,18 +209,20 @@ void test_ui_loop(void)
 void test_battery_monitor(void)
 {
 	/* Battery Monitor Unit Test */
-	// ADCReader_t ADCReader;
-	// initADCReader(&ADCReader);
+	ADCReader_t ADCReader;
+	initADCReader(&ADCReader);
 
-	// BatteryMonitor_t BatteryMonitor;
-	// initBatteryMonitor(&BatteryMonitor);
+	BatteryMonitor_t BatteryMonitor;
+	initBatteryMonitor(&BatteryMonitor, &ADCReader);
 
 	printk("Battery Monitor Unit Test: \n");
+	printk("%20s Temperature: %4d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","ADC_example: ",  1500,2100,1850,1 ? "true" : "false");
+	printk("%20s Temperature: %4d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","Actual_example: ",  25,3900,300,1 ? "true" : "false");
+	printk("\n");
 
-	printk("%15s Temperature: %3d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","Actual: ",  -1,-1,-1, 0 ? "true" : "false");
-	printk("%15s Temperature: %3d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","Expected: ",  25,3900,300,1 ? "true" : "false");
-
-
+	printk("%20s Temperature: %4d mV | Voltage: %4d mV | Current: %4d mV | Charging: %s\n","ADC: ",  BatteryMonitor.ADCReader->getV_BAT_TEMP_ADC_mV(BatteryMonitor.ADCReader),BatteryMonitor.ADCReader->getV_BAT_ADC_mV(BatteryMonitor.ADCReader),BatteryMonitor.ADCReader->getBAT_CUR_mV(BatteryMonitor.ADCReader),1 ? "true" : "false");
+	printk("%20s Temperature: %4d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","Actual: ",  BatteryMonitor.getBatteryTemperature(),BatteryMonitor.getBatteryVoltage(),BatteryMonitor.getBatteryCurrent(), BatteryMonitor.getBatteryIsCharging() ? "true" : "false");
+	printk("\n");
 
 
 }
