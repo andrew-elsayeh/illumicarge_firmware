@@ -20,6 +20,8 @@
 
 #include "user_interface/user_interface.h"
 
+#include "pwm_controller/pwm_controller.h"
+
 void main(void)
 {
 
@@ -35,37 +37,37 @@ void main(void)
 	// 	k_sleep(K_MSEC(100));
 	// }
 
-	/* For Teting User Input*/
-	UserInterface_t UserInterface;
-	initUserInterface(&UserInterface);
-
-	while(1){
-
-		printk("User Input LED Brighness Percentage: %d \n", UserInterface.getUserInputLEDBrightnessPercent());
-		k_sleep(K_MSEC(100));
-	}
-
-
-	// /* For Testing PWM*/
+	// /* For Teting User Input*/
 	// UserInterface_t UserInterface;
 	// initUserInterface(&UserInterface);
 
 	// while(1){
 
-	// 	// printk("LED Brighness Percentage: %d \n", UserInterface.getLEDBrightnessPercentage(&UserInterface));
-
-	// 	UserInterface.setLEDPWM(0);
-	// 	printk("LED should be off.. \n");
-	// 	k_sleep(K_MSEC(1000));
-
-	// 	UserInterface.setLEDPWM(50);
-	// 	printk("LED should be at 50 percent brightness.. \n");		
-	// 	k_sleep(K_MSEC(1000));
-
-	// 	UserInterface.setLEDPWM(100);
-	// 	printk("LED should be at 100 percent brightness.. \n");
-	// 	k_sleep(K_MSEC(1000));
+	// 	printk("User Input LED Brighness Percentage: %d \n", UserInterface.getUserInputLEDBrightnessPercent());
+	// 	k_sleep(K_MSEC(100));
 	// }
+
+
+	/* For Testing PWM*/
+	PWMController_t PWMController;
+	initPWMController(&PWMController);
+
+	printk("LED should fade on and off.. \n");
+
+	while(1){
+		
+		for(int i = 0;i < 100; i++)
+		{
+			PWMController.setLEDBrightness(i);
+			k_sleep(K_MSEC(5));
+		}
+		for(int i = 0;i < 100; i++)
+		{
+			PWMController.setLEDBrightness(100-i);
+			k_sleep(K_MSEC(5));
+		}
+
+	}
 
 	// /* For Testing PWM Control*/
 	// UserInterface_t UserInterface;
