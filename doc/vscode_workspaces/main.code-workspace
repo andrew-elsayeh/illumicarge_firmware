@@ -13,7 +13,10 @@
 			"stddef.h": "c",
 			"device.h": "c",
 			"adc_reader.h": "c",
-			"inttypes.h": "c"
+			"inttypes.h": "c",
+			"user_interface.h": "c",
+			"pwm_controller.h": "c",
+			"power_path_controller.h": "c"
 		}
 	}
 }

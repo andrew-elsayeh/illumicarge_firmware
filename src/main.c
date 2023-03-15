@@ -22,6 +22,9 @@
 
 #include "pwm_controller/pwm_controller.h"
 
+#include "power_path_controller/power_path_controller.h"
+
+
 void clear_console(void)
 {
 	printk("\n");
@@ -116,6 +119,40 @@ void main(void)
 	// 		k_sleep(K_MSEC(10));
 	// 	}
 	// }
+
+	/*Power Path Controller Unit Test*/
+
+	PowerPathController_t PowerPathController;
+	initPowerPathController(&PowerPathController);
+
+	printk("Will Toggle Load and Battery Charger Every Second.. \n");
+
+	while(1){
+		clear_console();
+		printk("Turning on load.. ");
+		// PowerPathController.setLoad(true);
+		// printk("Status of load: %d\n", (int)PowerPathController.getLoadStatus());
+
+		k_sleep(K_MSEC(500));
+		
+		printk("Turning on charging.. ");
+		// PowerPathController.setBatteryCharger(true);
+		// printk("Status of charging: %d\n", (int)PowerPathController.getBatteryChargerStatus());
+
+		k_sleep(K_MSEC(1000));
+
+
+		printk("Turning off load.. ");
+		// PowerPathController.setLoad(false);
+		// printk("Status of load: %d\n", (int)PowerPathController.getLoadStatus());
+
+		k_sleep(K_MSEC(500));
+		printk("Turning off charging.. ");
+		// PowerPathController.setBatteryCharger(false);
+		// printk("Status of charging: %d\n", (int)PowerPathController.getBatteryChargerStatus());
+
+		k_sleep(K_MSEC(1000));
+	}
 
 
 }
