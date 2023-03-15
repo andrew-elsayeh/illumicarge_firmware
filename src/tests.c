@@ -176,7 +176,7 @@ void test_ui(void)
 		printk("User Input LED Brighness Percentage: %d \n", user_input);
 		UserInterface.setStatusLEDs(soc_percentage);
 
-		k_sleep(K_MSEC(1000));
+		k_sleep(K_MSEC(500));
 		if(dir)
 		{
 			soc_percentage = soc_percentage + 25;
