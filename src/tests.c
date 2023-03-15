@@ -39,7 +39,7 @@ void test_end_to_end(void)
 
 	//Run UI Test and stay in loop
 	printk("\nEnd to End Test:  UI\n");
-	test_ui();
+	test_ui_loop();
 }
 
 
@@ -84,6 +84,8 @@ void test_end_to_end_manual(void)
 }
 
 
+
+
 void test_adc(void)
 {
 	/* ADC Reader Unit Tets*/
@@ -98,6 +100,14 @@ void test_adc(void)
 
 }
 
+void test_adc_loop(void)
+{
+	while (1)
+	{
+		test_adc();
+		k_msleep(100);
+	}
+}
 
 void test_pwm_controller(void)
 {
@@ -158,7 +168,7 @@ void test_power_path_controller(void)
 
 
 
-void test_ui(void)
+void test_ui_loop(void)
 {
 	/*User Interface Unit Test*/
 	UserInterface_t UserInterface;
