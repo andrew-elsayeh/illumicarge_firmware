@@ -17,4 +17,7 @@ void test_power_path_controller(void);
 void test_ui_loop(void);
 
 
+void test_battery_monitor(void);
+
+
 

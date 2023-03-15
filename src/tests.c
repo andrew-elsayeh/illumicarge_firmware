@@ -202,7 +202,24 @@ void test_ui_loop(void)
 	}
 }
 
+void test_battery_monitor(void)
+{
+	/* Battery Monitor Unit Test */
+	// ADCReader_t ADCReader;
+	// initADCReader(&ADCReader);
 
+	// BatteryMonitor_t BatteryMonitor;
+	// initBatteryMonitor(&BatteryMonitor);
+
+	printk("Battery Monitor Unit Test: \n");
+
+	printk("%15s Temperature: %3d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","Actual: ",  -1,-1,-1, 0 ? "true" : "false");
+	printk("%15s Temperature: %3d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","Expected: ",  25,3900,300,1 ? "true" : "false");
+
+
+
+
+}
 
 
 
