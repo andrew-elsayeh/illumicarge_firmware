@@ -125,31 +125,31 @@ void main(void)
 	PowerPathController_t PowerPathController;
 	initPowerPathController(&PowerPathController);
 
-	printk("Will Toggle Load and Battery Charger Every Second.. \n");
+	printk("Will Toggle Load and Battery Charger Every Second.. check connectedlogic analyzer \n");
 
 	while(1){
 		clear_console();
 		printk("Turning on load.. ");
-		// PowerPathController.setLoad(true);
-		// printk("Status of load: %d\n", (int)PowerPathController.getLoadStatus());
+		PowerPathController.setLoad(true);
+		printk("Status of load: %d\n", (int)PowerPathController.getLoadStatus());
 
 		k_sleep(K_MSEC(500));
 		
 		printk("Turning on charging.. ");
-		// PowerPathController.setBatteryCharger(true);
-		// printk("Status of charging: %d\n", (int)PowerPathController.getBatteryChargerStatus());
+		PowerPathController.setBatteryCharger(true);
+		printk("Status of charging: %d\n", (int)PowerPathController.getBatteryChargerStatus());
 
 		k_sleep(K_MSEC(1000));
 
 
 		printk("Turning off load.. ");
-		// PowerPathController.setLoad(false);
-		// printk("Status of load: %d\n", (int)PowerPathController.getLoadStatus());
+		PowerPathController.setLoad(false);
+		printk("Status of load: %d\n", (int)PowerPathController.getLoadStatus());
 
 		k_sleep(K_MSEC(500));
 		printk("Turning off charging.. ");
-		// PowerPathController.setBatteryCharger(false);
-		// printk("Status of charging: %d\n", (int)PowerPathController.getBatteryChargerStatus());
+		PowerPathController.setBatteryCharger(false);
+		printk("Status of charging: %d\n", (int)PowerPathController.getBatteryChargerStatus());
 
 		k_sleep(K_MSEC(1000));
 	}
