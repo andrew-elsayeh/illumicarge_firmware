@@ -13,6 +13,7 @@ void test_ui_loop(void);
 
 
 void test_battery_monitor(void);
+void test_battery_monitor_loop(void);
 
 
 

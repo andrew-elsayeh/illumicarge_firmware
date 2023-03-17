@@ -230,6 +230,31 @@ void test_battery_monitor(void)
 
 
 }
+void test_battery_monitor_loop(void)
+{
+	/* Battery Monitor Unit Test */
+	ADCReader_t ADCReader;
+	initADCReader(&ADCReader);
+
+	BatteryMonitor_t BatteryMonitor;
+	initBatteryMonitor(&BatteryMonitor, &ADCReader);
+	printk("Battery Monitor Unit Test: \n");
+	printk("%20s Temperature: %4d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","ADC_example: ",  1500,2100,1850,1 ? "true" : "false");
+	printk("%20s Temperature: %4d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","Actual_example: ",  25,3900,300,1 ? "true" : "false");
+	printk("\n");
+
+	while(1)
+	{
+
+		printk("%20s Temperature: %4d mV | Voltage: %4d mV | Current: %4d mV | Charging: %s\n","ADC: ",  BatteryMonitor.ADCReader->getV_BAT_TEMP_ADC_mV(BatteryMonitor.ADCReader),BatteryMonitor.ADCReader->getV_BAT_ADC_mV(BatteryMonitor.ADCReader),BatteryMonitor.ADCReader->getBAT_CUR_mV(BatteryMonitor.ADCReader),1 ? "true" : "false");
+		printk("%20s Temperature: %4d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","Actual: ",  BatteryMonitor.getBatteryTemperature(),BatteryMonitor.getBatteryVoltage(),BatteryMonitor.getBatteryCurrent(), BatteryMonitor.getBatteryIsCharging() ? "true" : "false");
+		printk("\n");
+		k_msleep(1000);
+	}
+
+
+
+}
 
 
 
