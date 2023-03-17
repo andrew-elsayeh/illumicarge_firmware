@@ -6,7 +6,7 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(ADC)
 
 target_sources(app PRIVATE src/main.c)
-target_sources(app PRIVATE src/tests.c)
+target_sources(app PRIVATE src/tests/tests.c)
 target_sources(app PRIVATE src/adc_reader/adc_reader.c)
 target_sources(app PRIVATE src/user_interface/user_interface.c)
 target_sources(app PRIVATE src/pwm_controller/pwm_controller.c)

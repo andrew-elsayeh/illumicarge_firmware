@@ -13,17 +13,14 @@
 
 #include "tests.h"
 
-#include "adc_reader/adc_reader.h"
-#include "user_interface/user_interface.h"
-#include "pwm_controller/pwm_controller.h"
-#include "power_path_controller/power_path_controller.h"
-#include "battery_monitor/battery_monitor.h"
 
 
 #define ADC_TEST_DURATION 1000
 #define BAT_TEST_DURATION 1000
 void test_end_to_end(void)
 {
+	int64_t cur_time;
+	
 	GPIOController_t GPIOController;  
 	ADCReader_t ADCReader;
 	PWMController_t PWMController;
@@ -31,11 +28,12 @@ void test_end_to_end(void)
 	BatteryMonitor_t BatteryMonitor;
 	UserInterface_t UserInterface;
 
+
 	printk("\nEnd to End Test:  GPIO Controller\n");
 	test_gpio_controller(&GPIOController);
 
 	printk("\nEnd to End Test: ADC \n");
-	int64_t cur_time = k_uptime_get(); 
+	cur_time = k_uptime_get(); 
 	while(k_uptime_get() < cur_time + ADC_TEST_DURATION)
 	{
 		test_adc(&ADCReader);
@@ -51,6 +49,8 @@ void test_end_to_end(void)
 	printk("\nEnd to End Test:  Power Path Controller\n");
 	test_power_path_controller(&GPIOController, &PowerPathController);
 
+
+	//Run Battery Monitor test for 1 Second
 	printk("\nEnd to End Test:  Battery Monitor\n");
 	cur_time = k_uptime_get(); 
 	while(k_uptime_get() < cur_time + BAT_TEST_DURATION)
