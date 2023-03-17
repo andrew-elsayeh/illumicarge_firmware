@@ -2,12 +2,12 @@
 #include "zephyr/console/console.h"
 
 void main(void)
-{
+{	
+	test_end_to_end();
 	// test_adc_loop();
-	while(1)
-	{
-		test_battery_monitor();	
-		k_msleep(1000);
+	// while(1)
+	// {	
+	// 	k_msleep(1000);
 
-	}
+	// }
 }

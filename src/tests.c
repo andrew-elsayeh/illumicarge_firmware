@@ -41,6 +41,10 @@ void test_end_to_end(void)
 	printk("\nEnd to End Test:  Power Path Controller\n");
 	test_power_path_controller();
 
+	printk("\nEnd to End Test:  Battery Monitor\n");
+	test_battery_monitor();	
+
+
 	//Run UI Test and stay in loop
 	printk("\nEnd to End Test:  UI\n");
 	test_ui_loop();
