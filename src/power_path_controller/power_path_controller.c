@@ -1,13 +1,7 @@
 
-#include <zephyr/devicetree.h>
-#include <zephyr/drivers/gpio.h>
-#include <zephyr/kernel.h>
-
-#include <zephyr/device.h>
-#include <zephyr/sys/util.h>
 #include <zephyr/sys/printk.h>
-#include <inttypes.h>
 
+#include <inttypes.h>
 
 #include "power_path_controller.h"
 #include "../gpio_controller/gpio_controller.h"
