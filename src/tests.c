@@ -54,41 +54,41 @@ void test_end_to_end(void)
 
 void test_end_to_end_manual(void)
 {
-	/**
-	 * End-to-End Test 
-	 */
+	// /**
+	//  * End-to-End Test 
+	//  */
 
-	ADCReader_t ADCReader;
-	initADCReader(&ADCReader);
+	// ADCReader_t ADCReader;
+	// initADCReader(&ADCReader);
 
-	PWMController_t PWMController;
-	initPWMController(&PWMController);
+	// PWMController_t PWMController;
+	// initPWMController(&PWMController);
 
 	
-	UserInterface_t UserInterface;
-	initUserInterface(&UserInterface, &PWMController);
+	// UserInterface_t UserInterface;
+	// initUserInterface(&UserInterface, &PWMController);
 
-	printk("End-to-End (Unit) Test:  Displays ADC readings of all channels, User Input controls the status LEDs as well as the PWM Brightness\n");
-	while(1){
-		clear_console();
-		//ADC
-		printk("ADC1: %5dmV     ", ADCReader.getADC1_mV(&ADCReader));
-		printk("ADC2: %5dmV     ", ADCReader.getADC2_mV(&ADCReader));
-		printk("V_BAT_ADC: %5dmV     ", ADCReader.getV_BAT_TEMP_ADC_mV(&ADCReader));
-		printk("V_BAT_TEMP_ADC: %5dmV     ", ADCReader.getV_BAT_ADC_mV(&ADCReader));
-		printk("BAT_CUR: %5dmV\n", ADCReader.getBAT_CUR_mV(&ADCReader));
+	// printk("End-to-End (Unit) Test:  Displays ADC readings of all channels, User Input controls the status LEDs as well as the PWM Brightness\n");
+	// while(1){
+	// 	clear_console();
+	// 	//ADC
+	// 	printk("ADC1: %5dmV     ", ADCReader.getADC1_mV(&ADCReader));
+	// 	printk("ADC2: %5dmV     ", ADCReader.getADC2_mV(&ADCReader));
+	// 	printk("V_BAT_ADC: %5dmV     ", ADCReader.getV_BAT_TEMP_ADC_mV(&ADCReader));
+	// 	printk("V_BAT_TEMP_ADC: %5dmV     ", ADCReader.getV_BAT_ADC_mV(&ADCReader));
+	// 	printk("BAT_CUR: %5dmV\n", ADCReader.getBAT_CUR_mV(&ADCReader));
 		
-		//UI
-		uint32_t user_input = UserInterface.getUserInputLEDBrightnessPercent();
-		printk("User Input LED Brighness Percentage: %d \n", user_input);
-		UserInterface.setStatusLEDs(user_input);
+	// 	//UI
+	// 	uint32_t user_input = UserInterface.getUserInputLEDBrightnessPercent();
+	// 	printk("User Input LED Brighness Percentage: %d \n", user_input);
+	// 	UserInterface.setStatusLEDs(user_input);
 		
-		//PWM
-		PWMController.setLEDBrightness(user_input);
-		printk("PWM Brightness: %d \n", PWMController.getLEDBrightnessPercentage());
+	// 	//PWM
+	// 	PWMController.setLEDBrightness(user_input);
+	// 	printk("PWM Brightness: %d \n", PWMController.getLEDBrightnessPercentage());
 
-		k_sleep(K_MSEC(200));
-	}
+	// 	k_sleep(K_MSEC(200));
+	// }
 }
 
 
@@ -181,11 +181,15 @@ void test_power_path_controller(void)
 void test_ui_loop(void)
 {
 	/*User Interface Unit Test*/
-	UserInterface_t UserInterface;
 	PWMController_t PWMController;
-
 	initPWMController(&PWMController);
-	initUserInterface(&UserInterface, &PWMController);
+
+	GPIOController_t GPIOController;
+	initGPIOController(&GPIOController);
+
+	UserInterface_t UserInterface;
+	initUserInterface(&UserInterface, &PWMController, &GPIOController);
+
 	printk("User Interface Test: Displays user input and sets the status led \n");
 	int soc_percentage = 0;
 

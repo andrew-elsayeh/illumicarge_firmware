@@ -7,17 +7,18 @@
 #include <stdint.h>
 
 #include "../pwm_controller/pwm_controller.h"
+#include "../gpio_controller/gpio_controller.h"
 
 typedef struct UserInterface UserInterface_t;
 
 struct UserInterface {
 
-    PWMController_t* PWMController;
-    uint32_t user_input_led_brightness_percent;
+    // PWMController_t* PWMController;
+    // uint32_t user_input_led_brightness_percent;
     void (*setStatusLEDs) (uint32_t percentage);
     uint32_t (*getUserInputLEDBrightnessPercent) (void);
 
 };
 
-void initUserInterface(UserInterface_t *self, PWMController_t *PWMController);
+void initUserInterface(UserInterface_t *self, PWMController_t *PWMController, GPIOController_t *GPIOController);
 #endif /* USER_INTERFACE_H */
