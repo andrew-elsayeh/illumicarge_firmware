@@ -9,9 +9,9 @@
 
 void main(void)
 {	
-	// test_end_to_end();
+	test_end_to_end();
 
-	PWMController_t PWMController;
-	test_pwm_controller(&PWMController);
+	// PWMController_t PWMController;
+	// test_pwm_controller(&PWMController);
 
 }
