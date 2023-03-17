@@ -8,6 +8,7 @@
 #include <stdbool.h>
 
 #include "../adc_reader/adc_reader.h"
+#include "../gpio_controller/gpio_controller.h"
 
 typedef struct BatteryMonitor BatteryMonitor_t;
 
@@ -21,5 +22,5 @@ struct BatteryMonitor {
 };
 
 
-void initBatteryMonitor(BatteryMonitor_t *self, ADCReader_t *ADCReader);
+void initBatteryMonitor(BatteryMonitor_t *self, ADCReader_t *ADCReader, GPIOController_t *GPIOController);
 #endif /* BATTERY_MONITOR_H */

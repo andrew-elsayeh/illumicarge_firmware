@@ -12,4 +12,5 @@ target_sources(app PRIVATE src/user_interface/user_interface.c)
 target_sources(app PRIVATE src/pwm_controller/pwm_controller.c)
 target_sources(app PRIVATE src/power_path_controller/power_path_controller.c)
 target_sources(app PRIVATE src/battery_monitor/battery_monitor.c)
+target_sources(app PRIVATE src/gpio_controller/gpio_controller.c)
 

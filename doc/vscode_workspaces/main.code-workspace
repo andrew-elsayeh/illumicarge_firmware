@@ -18,7 +18,9 @@
 			"pwm_controller.h": "c",
 			"power_path_controller.h": "c",
 			"console.h": "c",
-			"battery_monitor.h": "c"
+			"battery_monitor.h": "c",
+			"gpio_controller.h": "c",
+			"typeinfo": "c"
 		}
 	}
 }

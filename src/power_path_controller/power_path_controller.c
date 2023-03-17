@@ -10,6 +10,7 @@
 
 
 #include "power_path_controller.h"
+#include "../gpio_controller/gpio_controller.h"
 
 /**
  * Private Methods
@@ -23,15 +24,7 @@ void _init_power_path_controller(void);
 bool load_status;
 bool battery_charger_status;
 
-#if !DT_NODE_EXISTS(DT_NODELABEL(load_switch))
-#error "Overlay for power output node not properly defined."
-#endif
-
-static const struct gpio_dt_spec load_switch =
-	GPIO_DT_SPEC_GET_OR(DT_NODELABEL(load_switch), gpios, {0});
-static const struct gpio_dt_spec charging_switch =
-	GPIO_DT_SPEC_GET_OR(DT_NODELABEL(charging_switch), gpios, {0});
-
+static GPIOController_t *_gpio_controller;
 /**
  * Class Public Methods
  */
@@ -42,67 +35,36 @@ void setBatteryCharger(bool status);
 
 void _init_power_path_controller(void)
 {
-    int err;
-
-	if (!gpio_is_ready_dt(&load_switch)) {
-		printk("The load switch pin GPIO port is not ready.\n");
-		return;
-	}
-	if (!gpio_is_ready_dt(&charging_switch)) {
-		printk("The charging switch pin GPIO port is not ready.\n");
-		return;
-	}
-
-
-    err = gpio_pin_configure_dt(&load_switch, GPIO_OUTPUT_INACTIVE);
-	if (err != 0) {
-		printk("Configuring GPIO pin failed: %d\n", err);
-		return;
-	}
-    err = gpio_pin_configure_dt(&charging_switch, GPIO_OUTPUT_INACTIVE);
-	if (err != 0) {
-		printk("Configuring GPIO pin failed: %d\n", err);
-		return;
-	}
+	return;
     
 }
-void setLoad(bool status)
+void setLoad(bool state)
 {	
-    int err;
-    err = gpio_pin_set_dt(&load_switch, status);
-	if (err != 0) {
-		printk("Setting GPIO pin level failed: %d\n", err);
-	}
+	_gpio_controller->setEN2(state);
+
 }
 
-void setBatteryCharger(bool status)
+void setBatteryCharger(bool charging)
 {
-    int err;
-	if (status == true)	//if the battery should charge
+	if(charging == false)
 	{
-		err = gpio_pin_configure_dt(&charging_switch, GPIO_INPUT);
-		if (err != 0) {
-			printk("Configuring GPIO pin failed: %d\n", err);
-			return;
-		}
+		_gpio_controller->setPROG(true);
 	}
-	else if (status == false)
-	{	
-		err = gpio_pin_configure_dt(&charging_switch, GPIO_OUTPUT_INACTIVE);
-		if (err != 0) {
-			printk("Setting Battery Charger Failed: %d\n", err);
-		}
+	else
+	{
+		_gpio_controller->setPROG(false);
+	}
 
-	}
-	
 }
 
 
 
-void initPowerPathController(PowerPathController_t *self)
+void initPowerPathController(PowerPathController_t *self, GPIOController_t *gpio_controller)
 {
     self->setBatteryCharger = setBatteryCharger;
     self->setLoad = setLoad;
+
+	_gpio_controller = gpio_controller;
 
     _init_power_path_controller();
 

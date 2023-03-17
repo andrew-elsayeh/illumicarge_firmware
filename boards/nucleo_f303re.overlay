@@ -91,7 +91,7 @@
 	};
 	charging_switch: charging_switch {
 		compatible = "power-switch";
-		gpios = <&gpioc 12 GPIO_ACTIVE_LOW>;
+		gpios = <&gpioc 12 GPIO_ACTIVE_HIGH>;
 	};
 
 	aliases {

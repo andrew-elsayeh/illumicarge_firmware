@@ -6,9 +6,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
-typedef struct EmptyClass EmptyClass_t;
+typedef struct GPIOReader EmptyClass_t;
 
-struct EmptyClass {
+struct GPIOReader {
     uint8_t (*emptyPublicMethod) (uint32_t argument);
 
 };

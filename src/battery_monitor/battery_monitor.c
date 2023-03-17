@@ -1,26 +1,20 @@
 #include "battery_monitor.h"
 
 #include <zephyr/sys/printk.h>
-#include <zephyr/drivers/gpio.h>
 
-#define MSP_STAT_NODE DT_ALIAS(mspstat)
-
+#include "../gpio_controller/gpio_controller.h"
 
 
 /**
  * Private Methods
  */
-void _private_method(void)
-{
-    return;
-}
+
 
 /**
  * Private Members
  */
-ADCReader_t *_adc_reader = NULL;
-BatteryMonitor_t *_battery_monitor_instance = NULL;
-static const struct gpio_dt_spec mspstat = GPIO_DT_SPEC_GET(MSP_STAT_NODE, gpios);
+static ADCReader_t *_adc_reader = NULL;
+static GPIOController_t *_gpio_controller = NULL;
 
 /**
  * Public Methods
@@ -53,12 +47,14 @@ int32_t getBatteryCurrent(void)
 
 bool getBatteryIsCharging(void)
 {
-    return gpio_pin_get_dt(&mspstat);
+    return _gpio_controller->getMSP_STAT();
 }
 
-void initBatteryMonitor(BatteryMonitor_t *self, ADCReader_t *ADCReader)
+void initBatteryMonitor(BatteryMonitor_t *self, ADCReader_t *ADCReader, GPIOController_t *GPIOController)
 {
     _adc_reader = ADCReader;
+    _gpio_controller = GPIOController;
+
     self->ADCReader = ADCReader;
     self->getBatteryTemperature = getBatteryTemperature;
     self->getBatteryVoltage = getBatteryVoltage;
@@ -66,17 +62,6 @@ void initBatteryMonitor(BatteryMonitor_t *self, ADCReader_t *ADCReader)
     self->getBatteryCurrent = getBatteryCurrent;
     self->getBatteryIsCharging = getBatteryIsCharging;
 
-	if (!gpio_is_ready_dt(&mspstat)) {
-		printk("Error: Device %s is not ready\n",
-		       mspstat.port->name);
-		return;
-	}
 
-    int ret = gpio_pin_configure_dt(&mspstat, GPIO_INPUT);
-	if (ret != 0) {
-		printk("Error %d: failed to configure %s pin %d\n",
-		       ret, mspstat.port->name, mspstat.pin);
-		return;
-	}
 
 }

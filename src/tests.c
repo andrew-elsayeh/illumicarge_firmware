@@ -147,9 +147,11 @@ void test_power_path_controller(void)
 	// clear_console();
 	/*Power Path Controller Unit Test*/
 
-	PowerPathController_t PowerPathController;
-	initPowerPathController(&PowerPathController);
+	GPIOController_t GPIOController;
+	initGPIOController(&GPIOController);
 
+	PowerPathController_t PowerPathController;
+	initPowerPathController(&PowerPathController, &GPIOController);
 
 
 	printk("Power Path Controller Test: check connected logic analyzer\n");
@@ -216,8 +218,11 @@ void test_battery_monitor(void)
 	ADCReader_t ADCReader;
 	initADCReader(&ADCReader);
 
+	GPIOController_t GPIOController;
+	initGPIOController(&GPIOController);
+
 	BatteryMonitor_t BatteryMonitor;
-	initBatteryMonitor(&BatteryMonitor, &ADCReader);
+	initBatteryMonitor(&BatteryMonitor, &ADCReader, &GPIOController);
 
 	printk("Battery Monitor Unit Test: \n");
 	printk("%20s Temperature: %4d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","ADC_example: ",  1500,2100,1850,1 ? "true" : "false");
@@ -235,9 +240,13 @@ void test_battery_monitor_loop(void)
 	/* Battery Monitor Unit Test */
 	ADCReader_t ADCReader;
 	initADCReader(&ADCReader);
+	
+	GPIOController_t GPIOController;
+	initGPIOController(&GPIOController);
 
 	BatteryMonitor_t BatteryMonitor;
-	initBatteryMonitor(&BatteryMonitor, &ADCReader);
+	initBatteryMonitor(&BatteryMonitor, &ADCReader, &GPIOController);
+
 	printk("Battery Monitor Unit Test: \n");
 	printk("%20s Temperature: %4d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","ADC_example: ",  1500,2100,1850,1 ? "true" : "false");
 	printk("%20s Temperature: %4d °C | Voltage: %4d mV | Current: %4d mA | Charging: %s\n","Actual_example: ",  25,3900,300,1 ? "true" : "false");
