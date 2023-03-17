@@ -10,7 +10,6 @@
 #include "../gpio_controller/gpio_controller.h"
 
 typedef struct UserInterface UserInterface_t;
-
 struct UserInterface {
 
     void (*setStatusLEDs) (uint32_t percentage);
