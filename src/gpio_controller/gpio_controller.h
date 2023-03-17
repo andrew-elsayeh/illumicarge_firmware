@@ -20,8 +20,8 @@ struct GPIOController {
     void (*setLED4) (bool state);
     void (*setEN2)  (bool state);
     void (*setPROG) (bool state);
-    void (*configureBTN1Interrupt) (void (* callback));
-    void (*configureBTN2Interrupt) (void (* callback));
+    void (*addBTN1Interrupt) (void (* callback));
+    void (*addBTN2Interrupt) (void (* callback));
 
 };
 

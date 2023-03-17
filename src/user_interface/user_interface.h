@@ -13,8 +13,6 @@ typedef struct UserInterface UserInterface_t;
 
 struct UserInterface {
 
-    // PWMController_t* PWMController;
-    // uint32_t user_input_led_brightness_percent;
     void (*setStatusLEDs) (uint32_t percentage);
     uint32_t (*getUserInputLEDBrightnessPercent) (void);
 

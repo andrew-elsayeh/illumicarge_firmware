@@ -118,6 +118,25 @@ void _init_ui_gpios(void)
     gpio_pin_configure_dt(&statusled3, GPIO_OUTPUT_INACTIVE);
     gpio_pin_configure_dt(&statusled4, GPIO_OUTPUT_INACTIVE);
 
+
+	ret = gpio_pin_interrupt_configure_dt(&button_1,
+					      GPIO_INT_EDGE_TO_ACTIVE);
+	if (ret != 0) {
+		printk("Error %d: failed to configure interrupt on %s pin %d\n",
+			ret, button_1.port->name, button_1.pin);
+		return;
+	}
+
+	ret = gpio_pin_interrupt_configure_dt(&button_2,
+					      GPIO_INT_EDGE_TO_ACTIVE);
+	if (ret != 0) {
+		printk("Error %d: failed to configure interrupt on %s pin %d\n",
+			ret, button_2.port->name, button_2.pin);
+		return;
+	}
+
+
+
 }
 
 
@@ -229,30 +248,14 @@ void setPROG(bool state)
     }
 }
 
-void configureBTN1Interrupt(void (* callback))
+void addBTN1Interrupt(void (* callback))
 {
-    int ret = gpio_pin_interrupt_configure_dt(&button_1,
-					      GPIO_INT_EDGE_TO_ACTIVE);
-	if (ret != 0) {
-		printk("Error %d: failed to configure interrupt on %s pin %d\n",
-			ret, button_1.port->name, button_1.pin);
-		return;
-	}
-
 	gpio_init_callback(&button_1_cb_data, callback, BIT(button_1.pin));
 	gpio_add_callback(button_1.port, &button_1_cb_data);
 }
 
-void configureBTN2Interrupt(void (* callback))
+void addBTN2Interrupt(void (* callback))
 {
-
-	int ret = gpio_pin_interrupt_configure_dt(&button_2,
-					      GPIO_INT_EDGE_TO_ACTIVE);
-	if (ret != 0) {
-		printk("Error %d: failed to configure interrupt on %s pin %d\n",
-			ret, button_2.port->name, button_2.pin);
-		return;
-	}
 
 	gpio_init_callback(&button_2_cb_data, callback, BIT(button_2.pin));
 	gpio_add_callback(button_2.port, &button_2_cb_data);
@@ -267,8 +270,8 @@ void initGPIOController(GPIOController_t *self)
     self->setLED3 = setLED3;
     self->setLED4 = setLED4;
     self->setPROG = setPROG;
-    self->configureBTN1Interrupt = configureBTN1Interrupt;
-    self->configureBTN2Interrupt = configureBTN2Interrupt;
+    self->addBTN1Interrupt = addBTN1Interrupt;
+    self->addBTN2Interrupt = addBTN2Interrupt;
     _init_gpio_controller();
 
 }

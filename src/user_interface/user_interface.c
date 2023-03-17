@@ -9,6 +9,7 @@
 /**
  * Defines
  */
+#define BRIGHTNESS_STEP 10
 
 
 
@@ -35,15 +36,10 @@ void _button_2_cb(void);
 /**
  * Private Members
  */
-static uint32_t _user_input_led_brightness_percent;
+static uint32_t _user_input_led_brightness_percent = 0;
 static PWMController_t *_pwm_controller = NULL;
 static GPIOController_t *_gpio_controller = NULL;
 
-
-
-
-
-#define BRIGHTNESS_STEP 10
 
 void _button_1_cb(void)
 {
@@ -72,15 +68,6 @@ void _button_2_cb(void)
     }
 
 }
-
-void _init_user_interface(void)
-{
-    _gpio_controller->configureBTN1Interrupt(_button_1_cb);
-    _gpio_controller->configureBTN2Interrupt(_button_2_cb);
-}
-
-
-
 
 
 void setStatusLEDs( uint32_t percentage)
@@ -141,6 +128,7 @@ void initUserInterface(UserInterface_t *self, PWMController_t *PWMController, GP
     _pwm_controller = PWMController;
     _gpio_controller = GPIOController;
 
-    _init_user_interface();
+    _gpio_controller->addBTN1Interrupt(_button_1_cb);
+    _gpio_controller->addBTN2Interrupt(_button_2_cb);
 
 }
