@@ -74,13 +74,14 @@ static const struct gpio_dt_spec statusled3 = GPIO_DT_SPEC_GET(STATUS_LED3_NODE,
 static const struct gpio_dt_spec statusled4 = GPIO_DT_SPEC_GET(STATUS_LED4_NODE, gpios);
 
 
+#define BRIGHTNESS_STEP 10
 
 void _button_1_cb(const struct device *dev, struct gpio_callback *cb,
 		    uint32_t pins)
 {
     if(user_input_led_brightness_percent < 100)
     {
-        user_input_led_brightness_percent = user_input_led_brightness_percent + 25;
+        user_input_led_brightness_percent = user_input_led_brightness_percent + BRIGHTNESS_STEP;
     }
 
     if(_PWMController != NULL)
@@ -95,7 +96,7 @@ void _button_2_cb(const struct device *dev, struct gpio_callback *cb,
 {
     if(user_input_led_brightness_percent > 0)
     {
-        user_input_led_brightness_percent = user_input_led_brightness_percent - 25;
+        user_input_led_brightness_percent = user_input_led_brightness_percent - BRIGHTNESS_STEP;
     }
 
     if(_PWMController != NULL)

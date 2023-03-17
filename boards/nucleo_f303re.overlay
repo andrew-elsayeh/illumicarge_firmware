@@ -14,7 +14,7 @@
 	pwmleds {
 		compatible = "pwm-leds";
 		pwm_led0: pwm_led_0 {
-			pwms = <&pwm1 1 PWM_MSEC(20) PWM_POLARITY_NORMAL>; //TODO:On real board it's connected to PC0, but using PA5 for now bec of problem with TIM1 
+			pwms = <&pwm1 1 PWM_MSEC(1) PWM_POLARITY_NORMAL>; //TODO:On real board it's connected to PC0, but using PA5 for now bec of problem with TIM1 
 		};
 	};
 
